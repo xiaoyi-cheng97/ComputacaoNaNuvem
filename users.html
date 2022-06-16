@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+        <h2>Users with most questions</h2>
+        <br>
+        {% for x in range(0, q) %}
+            <h6><a class="article-title">{{x+1}} - {{ questions[x].username }} - posted {{ questions[x].count }}</a></h6>
+            <br>
+        {% endfor %}
+            <br>
+            <h2>Users with most answers</h2>
+            <br>
+            {% for x in range(0, a) %}
+            <h6><a class="article-title">{{x+1}} - {{ answers[x].username }} - answered {{ answers[x].count }}</a></h6>
+            <br>
+            {% endfor %}
+            <br>
+            <h2>Users with best score average in answers</h2>
+            <br>
+            {% for x in range(0, avq) %}
+            <h6><a class="article-title">{{x+1}} - {{ av_answers[x].username }} - {{ av_answers[x].average }} points</a></h6>
+            <br>
+            {% endfor %}
+            <br>
+            <h2>Users with best score average in questions</h2>
+            <br>
+            {% for x in range(0, ava) %}
+            <h6><a class="article-title">{{x+1}} - {{ av_questions[x].username }} - {{ av_questions[x].average }} points</a></h6>
+            <br>
+            {% endfor %}
+            <br>
+            <h2>Users ranking with status (based on answers)</h2>
+            <br>
+            {% for x in range(0, e) %}
+            <h6><a class="article-title">{{x+1}} - {{ experts[x].username }} - {{ experts[x].status }} {{ experts[x].expertise }}</a></h6>
+            <br>
+            {% endfor %}
+            <br>
+            <h2>Users ranking with status (based on answers)</h2>
+            <br>
+            {% for x in range(0, s) %}
+            <h6><a class="article-title">{{x+1}} - {{ skilled[x].username }} - {{ skilled[x].status }} {{ skilled[x].expertise }}</a></h6>
+            <br>
+            {% endfor %}
+        </div>
+    </article>
+{% endblock content %}

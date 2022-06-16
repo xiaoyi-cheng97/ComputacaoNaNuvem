@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+
+        <h2>Language Ranking</h2>
+        <br>
+        {% for x in range(0, total) %}
+            <h3><a class="article-title">{{x+1}} - {{ languages[x].language }}</a></h3>
+            <h6>Questions posted: {{ questions[x] }}</h6>
+            <h6>Answers: {{ answers[x] }}</h6>
+            <h6>Total of appearences: {{ languages[x].count }}</h6>
+            <br>
+            <br>
+        {% endfor %}
+        </div>
+    </article>
+{% endblock content %}

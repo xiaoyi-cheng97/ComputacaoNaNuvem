@@ -1,0 +1,451 @@
+swagger: "2.0"
+info:
+  title: Stack Forum
+  description: the api for the data set
+
+  version: 1.0.0
+
+host: "api.example.com"
+basePath: "/v1"
+
+
+
+tags:
+- name: Questions
+  description: the questions avalible 
+- name: Answers 
+  description: the answers avalible
+- name: Tags
+  description: the identifiers 
+- name: User
+  description: users
+
+schemes:
+- "https"
+- "http"
+
+paths:
+##############################################
+#######          QUESTIONS              ######
+#Adiciona uma pergunta#
+  /questions: 
+    post:
+      tags:
+      - "Questions"
+      summary: "Add a new question"
+      description: ""
+      operationId: "addQuestion"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Question proposed"
+        required: true
+        schema:
+          $ref: "#/definitions/question"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/question"
+        405:
+          description: "Invalid input"
+    put:
+      tags:
+      - "Questions"
+      summary: "Update an existing question"
+      description: ""
+      operationId: "updateQuestion"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Question object that needs to be update"
+        required: true
+        schema:
+          $ref: "#/definitions/question"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/question"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Question not found"
+        405:
+          description: "Validation exception"
+#apagar uma pergunta#    
+  /questions/{userId}:
+    delete:
+      tags:
+        - Questions
+      summary: "Delete questions"
+      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
+      operationId: "deleteQuestion"
+      parameters:
+      - name: "questionId"
+        in: "header"
+        type: "number"
+        description: "ID of the question that needs to be deleted"
+        required: true
+      - name: "userId"
+        in: "path"
+        type: "number"
+        description: "ID of the order that needs to be deleted"
+        required: true
+     
+      responses:
+        200: 
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Question not found"
+#pesquisar por titulo#
+  /question/{titulo}:
+    get:
+      tags:
+      - "Questions"
+      summary: "Find question by title"
+      description: "Returns a question"
+      operationId: "getQuestionByTitle"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "titulo"
+        in: "path"
+        description: "title of question to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/question"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Pet not found"
+
+##############################################
+#######          ANSWERS                ######
+  /answers:
+    post:
+      tags:
+      - "Answers"
+      summary: "Add a new answer to the question"
+      description: ""
+      operationId: "addAnswer"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Answer that user want to add"
+        required: true
+        schema:
+          $ref: "#/definitions/answer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/answer"
+        405:
+          description: "Invalid input"
+    put:
+      tags:
+      - "Answers"
+      summary: "Update an existing Answer"
+      description: ""
+      operationId: "updateAnswer"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Answer object that needs to be update"
+        required: true
+        schema:
+          $ref: "#/definitions/answer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/question"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Answer not found"
+        405:
+          description: "Validation exception"
+#dado um user ele consegue apagar as respostas#        
+  /{userId}/answers:
+    delete:
+      tags:
+        - "Answers"
+      summary: "Delete questions"
+      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
+      operationId: "deleteAnswerByUser"
+      parameters:
+      - name: "answerId"
+        in: "header"
+        description: "ID of the order that needs to be deleted"
+        type: "number"
+        required: true
+      - name: "userId"
+        in: "path"
+        description: "Owner of that answer"
+        type: "number"
+        required: true
+      responses:
+        200: 
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Question not found"
+ 
+          
+##############################################
+#######          TAGS                   ######
+#adicionar um tag#
+  /tag:
+   post:
+      tags: 
+        - "Tags"
+      summary: "Create a tag"
+      description: ""
+      operationId: "createTag"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created tag object"
+        required: true
+        schema:
+          $ref: "#/definitions/tag"
+      responses:
+        default:
+          description: "successful operation"
+#eliminar um tag#
+  /tag/{tag}:
+    delete:
+      tags:
+      - "Tags"
+      summary: "Delete tag"
+      description: ""
+      operationId: "deleteTag"
+      parameters:
+      - name: "tag"
+        in: "path"
+        description: "The tag that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid tag supplied"
+        404:
+          description: "Tag not found"
+#pesquisar peguntas por tags#
+    get:
+      tags:
+      - "Tags"
+      summary: "Find questions by tag"
+      description: "Returns questions with tag"
+      operationId: "getQuestionByTag"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "tag"
+        in: "path"
+        description: "tag of questions to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/questions"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "No question with this tag"
+          
+##############################################
+#######          USER                   ######        
+#adicionar um user#
+  /users: 
+    post:
+      tags: 
+        - "User"
+      summary: "Create user"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        default:
+          description: "successful operation"
+#apagar um user#
+  /user/{username}:
+    delete:
+      tags:
+      - "User"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        200: 
+          description: "successful operation"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found" 
+          
+          
+##############################################
+#######          DEFINITIONS            ######
+definitions:
+    question:
+      type: object
+      required:
+      - id
+
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          description: Title of the question
+        body:
+          type: string
+          description: the full question
+        creationDate:
+          type: integer
+          format: date-time
+        closed:
+          type: boolean
+          default: false
+        closedDate:
+          type: string
+          format: date-time
+        score:
+          type: integer
+          format: int64
+        idOwner: 
+          type: integer
+          format: int64
+        tags: 
+          type: array
+          items:
+              type: string
+
+      xml:
+        name: question
+        
+    answer:
+      type: object
+      required:
+      - id
+      
+      properties:
+        id:
+          type: integer
+          format: int64
+        body:
+          type: string
+          description: the full question
+        creationDate:
+          type: integer
+          format: date-time
+        score:
+          type: integer
+          format: int64
+        idOwner: 
+          type: integer
+          format: int64~
+        refId:
+          type: integer
+          format: int64
+
+      xml:
+        name: question
+    
+    tag:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+      xml:
+        name: "Tag"
+      
+    user:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        username:
+          type: "string"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        email:
+          type: "string"
+        password:
+          type: "string"
+        phone:
+          type: "string"
+        userStatus:
+          type: "integer"
+          format: "int32"
+          description: "User Status"
+      xml:
+        name: "User"
+      
+    questions:
+      type: "object"
+      properties:
+       ques: 
+        type: "array"
+        items:
+          type: "object"
+          additionalProperties:
+           $ref: '#/definitions/question'
+      
+      

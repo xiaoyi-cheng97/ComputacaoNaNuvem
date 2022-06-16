@@ -1,0 +1,20 @@
+﻿{% extends "layout.html" %}
+{% block content %}
+<article class="media content-section">
+    <div class="media-body">
+        <h2>Tags with most questions</h2>
+        <br>
+        {% for x in range(0, q) %}
+        <h6><a class="article-title">{{x+1}} - {{ questions[x].tagname }} - posted {{ questions[x].count }}</a></h6>
+        <br>
+        {% endfor %}
+        <br>
+        <h2>Tag ranking (based on period)</h2>
+        <br>
+        {% for x in range(0, s) %}
+        <h6><a class="article-title">{{x+1}} - {{ moreUsed[x].tagname }} - {{ moreUsed[x].times }}</a></h6>
+        <br>
+        {% endfor %}
+    </div>
+</article>
+{% endblock content %}

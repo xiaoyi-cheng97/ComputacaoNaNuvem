@@ -1,0 +1,16 @@
+﻿{% extends "layout.html" %}
+{% block content %}
+<article class="media content-section">
+    <div class="media-body">
+
+        <h2>Framework Ranking</h2>
+        <br>
+        {% for x in range(0, total) %}
+        <h3><a class="article-title">{{x+1}} - {{ frameworks[x].framework }}</a></h3>
+        <h6>Total of appearences: {{ frameworks[x].count }}</h6>
+        <br>
+        <br>
+        {% endfor %}
+    </div>
+</article>
+{% endblock content %}
